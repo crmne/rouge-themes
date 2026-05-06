@@ -12,6 +12,12 @@ bundle exec ruby script/generate_rouge_assets.rb
 bundle exec jekyll serve --livereload
 ```
 
+## Deployment
+
+GitHub Pages is deployed by `.github/workflows/pages.yml` on pushes to `main` and by manual workflow dispatch. In the repository settings, set Pages to use GitHub Actions as the source.
+
+The workflow installs Ruby gems, installs Python Pygments for the expanded theme catalog, regenerates the theme assets, builds Jekyll with GitHub Pages' `base_path`, and deploys `_site`.
+
 The generator writes:
 
 - `_data/rouge.yml`
