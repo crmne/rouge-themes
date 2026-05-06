@@ -113,6 +113,95 @@ layout: none
               <script type="application/json" id="exampleData">{{ site.data.examples | jsonify }}</script>
             </div>
           </section>
+
+          <section class="theme-editor-panel" aria-labelledby="themeEditorTitle">
+            <div class="panel-heading-row">
+              <h2 id="themeEditorTitle">Theme Editor</h2>
+              <div class="editor-actions">
+                <label class="compact-field">
+                  <span>Base</span>
+                  <select id="baseThemeSelect">
+                    {% for theme in site.data.rouge.themes %}
+                    <option value="{{ theme.name }}" {% if theme.name == site.data.rouge.default_theme %}selected{% endif %}>{{ theme.name }}</option>
+                    {% endfor %}
+                  </select>
+                </label>
+                <button type="button" id="duplicateTheme">Duplicate</button>
+                <button type="button" id="customThemeButton" data-theme-option="custom" aria-pressed="false">
+                  <span id="customThemeSwatch" class="swatch" style="--swatch-bg: {{ site.data.rouge.themes[0].background }}; --swatch-fg: {{ site.data.rouge.themes[0].foreground }}"></span>
+                  <span>Custom</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="theme-editor-grid">
+              <div class="editor-section">
+                <div class="section-heading">
+                  <h3>Canvas</h3>
+                  <div class="theme-stats" aria-live="polite">
+                    <span><strong id="themeColorCount">0</strong> colors</span>
+                    <span><strong id="themeBackgroundCount">0</strong> backgrounds</span>
+                    <span><strong id="themeItalicCount">0</strong> italic</span>
+                    <span><strong id="themeBoldCount">0</strong> bold</span>
+                  </div>
+                </div>
+                <div class="canvas-controls">
+                  <label class="color-field">
+                    <span>Background</span>
+                    <input type="color" id="themeBackgroundPicker" value="#f6f8fa">
+                    <input type="text" id="themeBackgroundText" value="#f6f8fa" spellcheck="false">
+                  </label>
+                  <label class="color-field">
+                    <span>Text</span>
+                    <input type="color" id="themeForegroundPicker" value="#24292f">
+                    <input type="text" id="themeForegroundText" value="#24292f" spellcheck="false">
+                  </label>
+                  <label>
+                    <span>Font</span>
+                    <select id="themeFontFamily">
+                      <option value="var(--mono)">IBM Plex Mono</option>
+                      <option value="ui-monospace, SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace">System Mono</option>
+                      <option value="Menlo, Monaco, Consolas, Liberation Mono, monospace">Menlo / Consolas</option>
+                      <option value="Courier New, Courier, monospace">Courier New</option>
+                    </select>
+                  </label>
+                  <label>
+                    <span>Size</span>
+                    <input type="number" id="themeFontSize" min="0.72" max="1.5" step="0.01" value="0.92">
+                  </label>
+                  <label>
+                    <span>Line</span>
+                    <input type="number" id="themeLineHeight" min="1" max="2.4" step="0.05" value="1.6">
+                  </label>
+                  <label>
+                    <span>Weight</span>
+                    <select id="themeFontWeight">
+                      <option value="400">Regular</option>
+                      <option value="500">Medium</option>
+                      <option value="600">Semibold</option>
+                      <option value="700">Bold</option>
+                    </select>
+                  </label>
+                  <label>
+                    <span>Tabs</span>
+                    <input type="number" id="themeTabSize" min="1" max="8" step="1" value="2">
+                  </label>
+                </div>
+              </div>
+
+              <div class="editor-section token-editor-section">
+                <div class="section-heading">
+                  <h3>Token Styles</h3>
+                </div>
+                <div id="tokenControls" class="token-controls"></div>
+              </div>
+
+              <label class="editor-section css-output">
+                <span>CSS</span>
+                <textarea id="themeCssOutput" readonly spellcheck="false"></textarea>
+              </label>
+            </div>
+          </section>
         </div>
       </div>
     </main>
