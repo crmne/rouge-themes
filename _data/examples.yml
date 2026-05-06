@@ -1,0 +1,168 @@
+- title: Ruby
+  language: ruby
+  code: |
+    # Edit this snippet to test italics, comments, and theme contrast.
+    class Palette
+      attr_reader :name, :tokens
+
+      def initialize(name, tokens)
+        @name = name
+        @tokens = tokens.freeze
+      end
+
+      def contrast_score
+        tokens.sum { |token| token.fetch(:weight, 1.0) }.round(2)
+      end
+    end
+
+    theme = Palette.new("github.dark", [{ name: :keyword, weight: 1.4 }])
+    puts "#{theme.name}: #{theme.contrast_score}"
+
+- title: JavaScript
+  language: javascript
+  code: |
+    export async function loadTheme(name, signal) {
+      const response = await fetch(`/themes/${encodeURIComponent(name)}.json`, { signal });
+
+      if (!response.ok) {
+        throw new Error(`Unable to load ${name}`);
+      }
+
+      return response.json();
+    }
+
+    document.querySelectorAll("[data-theme-option]").forEach((button) => {
+      button.addEventListener("click", () => loadTheme(button.dataset.themeOption));
+    });
+
+- title: Python
+  language: python
+  code: |
+    from dataclasses import dataclass
+    from statistics import mean
+
+    @dataclass(frozen=True)
+    class Sample:
+        language: str
+        token_count: int
+        readable: bool = True
+
+    samples = [Sample("ruby", 42), Sample("python", 58), Sample("rust", 73)]
+    average = mean(sample.token_count for sample in samples if sample.readable)
+
+    print(f"Average token count: {average:.1f}")
+
+- title: Rust
+  language: rust
+  code: |
+    use std::collections::BTreeMap;
+
+    #[derive(Debug, Clone)]
+    struct Theme<'a> {
+        name: &'a str,
+        dark: bool,
+    }
+
+    fn group_by_mode(themes: &[Theme<'_>]) -> BTreeMap<&'static str, usize> {
+        let mut groups = BTreeMap::new();
+
+        for theme in themes {
+            let key = if theme.dark { "dark" } else { "light" };
+            *groups.entry(key).or_insert(0) += 1;
+        }
+
+        groups
+    }
+
+- title: Go
+  language: go
+  code: |
+    package main
+
+    import (
+    	"encoding/json"
+    	"fmt"
+    	"log"
+    )
+
+    type Theme struct {
+    	Name       string `json:"name"`
+    	Background string `json:"background"`
+    }
+
+    func main() {
+    	payload := []byte(`{"name":"monokai.sublime","background":"#272822"}`)
+    	var theme Theme
+
+    	if err := json.Unmarshal(payload, &theme); err != nil {
+    		log.Fatal(err)
+    	}
+
+    	fmt.Printf("%s uses %s\n", theme.Name, theme.Background)
+    }
+
+- title: HTML
+  language: html
+  code: |
+    <article class="theme-card" data-theme="molokai">
+      <header>
+        <h2>molokai</h2>
+        <button type="button" aria-pressed="false">Preview</button>
+      </header>
+      <pre><code class="language-ruby">puts "Rouge"</code></pre>
+    </article>
+
+- title: CSS
+  language: css
+  code: |
+    .theme-card {
+      display: grid;
+      gap: 0.75rem;
+      border: 1px solid color-mix(in srgb, currentColor 18%, transparent);
+      border-radius: 8px;
+      background: var(--surface);
+    }
+
+    .theme-card:focus-within {
+      outline: 3px solid color-mix(in srgb, var(--accent) 35%, transparent);
+      outline-offset: 2px;
+    }
+
+- title: Shell
+  language: shell
+  code: |
+    # Generate the catalog from the installed Rouge gem.
+    bundle exec ruby script/generate_rouge_assets.rb
+
+    # Build the static site.
+    bundle exec jekyll build
+
+    # Preview locally.
+    bundle exec jekyll serve --livereload
+
+- title: JSON
+  language: json
+  code: |
+    {
+      "name": "github.light",
+      "lexer": "typescript",
+      "tokens": {
+        "keyword": "#cf222e",
+        "string": "#0a3069",
+        "function": "#8250df"
+      },
+      "lineNumbers": false
+    }
+
+- title: YAML
+  language: yaml
+  code: |
+    title: Rouge Themes
+    highlighter: rouge
+    preview:
+      theme: gruvbox.dark
+      languages:
+        - ruby
+        - javascript
+        - python
+        - rust

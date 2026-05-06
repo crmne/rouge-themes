@@ -1,0 +1,14 @@
+title: Rouge Themes
+description: A static gallery for previewing Rouge syntax highlighting themes.
+url: ""
+baseurl: ""
+
+markdown: kramdown
+highlighter: rouge
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  - _community_themes/
+  - script/

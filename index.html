@@ -1,0 +1,120 @@
+---
+layout: none
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ site.title | escape }}</title>
+    <meta name="description" content="{{ site.description | escape }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap">
+    <link rel="stylesheet" href="{{ '/assets/css/site.css' | relative_url }}">
+    <link rel="stylesheet" href="{{ '/assets/css/rouge-themes.css' | relative_url }}">
+    <script defer src="{{ '/assets/js/vendor/highlight.min.js' | relative_url }}"></script>
+    <script defer src="{{ '/assets/js/app.js' | relative_url }}"></script>
+  </head>
+  <body data-theme="{{ site.data.rouge.default_theme | default: 'github' }}">
+    <main class="page">
+      <header class="page-header">
+        <h1>Rouge Themes</h1>
+        <p>Rouge {{ site.data.rouge.rouge_version }} · {{ site.data.rouge.theme_count }} themes</p>
+      </header>
+
+      <div class="layout">
+        <aside class="theme-sidebar" aria-labelledby="themesTitle">
+          <details class="theme-drawer" open>
+            <summary id="themesTitle">Themes</summary>
+          {% assign rouge_themes = site.data.rouge.themes | where: "source", "rouge" %}
+          {% assign rubyllm_themes = site.data.rouge.themes | where: "source", "rubyllm" %}
+          {% assign pygments_themes = site.data.rouge.themes | where: "source", "pygments" %}
+          {% assign community_themes = site.data.rouge.themes | where: "source", "community" %}
+
+          <section class="theme-set" aria-labelledby="rubyLlmThemesTitle">
+            <h2 id="rubyLlmThemesTitle">RubyLLM display</h2>
+            <div class="theme-list" aria-label="RubyLLM docs display themes">
+            {% for theme in rubyllm_themes %}
+              <button type="button" data-theme-option="{{ theme.name }}" aria-pressed="{% if theme.name == site.data.rouge.default_theme %}true{% else %}false{% endif %}">
+                <span class="swatch" style="--swatch-bg: {{ theme.background }}; --swatch-fg: {{ theme.foreground }}"></span>
+                <span class="theme-name">{{ theme.name }}</span>
+                <span class="theme-mode">{{ theme.mode }}</span>
+              </button>
+            {% endfor %}
+            </div>
+          </section>
+
+          <section class="theme-set" aria-labelledby="rougeThemesTitle">
+            <h2 id="rougeThemesTitle">Rouge themes</h2>
+            <div class="theme-list" aria-label="Rouge themes">
+            {% for theme in rouge_themes %}
+              <button type="button" data-theme-option="{{ theme.name }}" aria-pressed="{% if theme.name == site.data.rouge.default_theme %}true{% else %}false{% endif %}">
+                <span class="swatch" style="--swatch-bg: {{ theme.background }}; --swatch-fg: {{ theme.foreground }}"></span>
+                <span class="theme-name">{{ theme.name }}</span>
+                <span class="theme-mode">{{ theme.mode }}</span>
+              </button>
+            {% endfor %}
+            </div>
+          </section>
+
+          <details class="more-themes">
+            <summary>Pygments themes <span>{{ pygments_themes | size }}</span></summary>
+            <div class="theme-list" aria-label="Pygments-compatible themes">
+            {% for theme in pygments_themes %}
+              <button type="button" data-theme-option="{{ theme.name }}" aria-pressed="false">
+                <span class="swatch" style="--swatch-bg: {{ theme.background }}; --swatch-fg: {{ theme.foreground }}"></span>
+                <span class="theme-name">{{ theme.name }}</span>
+                <span class="theme-mode">{{ theme.mode }}</span>
+              </button>
+            {% endfor %}
+            </div>
+          </details>
+
+          <details class="more-themes">
+            <summary>Community themes <span>{{ community_themes | size }}</span></summary>
+            <div class="theme-list" aria-label="Community themes">
+            {% for theme in community_themes %}
+              <button type="button" data-theme-option="{{ theme.name }}" aria-pressed="false">
+                <span class="swatch" style="--swatch-bg: {{ theme.background }}; --swatch-fg: {{ theme.foreground }}"></span>
+                <span class="theme-name">{{ theme.name }}</span>
+                <span class="theme-mode">{{ theme.mode }}</span>
+              </button>
+            {% endfor %}
+            </div>
+          </details>
+          </details>
+        </aside>
+
+        <div class="preview-column">
+          <section class="example-panel" aria-labelledby="examplesTitle">
+            <h2 id="examplesTitle">Editable Examples</h2>
+            <div class="code-group">
+              <nav class="code-tabs" aria-label="Example languages">
+                {% for example in site.data.examples %}
+                  <button class="{% if forloop.first %}is-active{% endif %}" type="button" data-language-filter="{{ example.language }}">{{ example.title }}</button>
+                {% endfor %}
+              </nav>
+              <div class="editor-grid">
+                <div class="preview-pane">
+                  <div class="preview-heading">
+                    <span>Preview</span>
+                    <span id="previewLanguage">{{ site.data.examples[0].language }}</span>
+                  </div>
+                  <div class="highlight example-output">
+                    <pre class="codehilite"><code id="examplePreview"></code></pre>
+                  </div>
+                </div>
+                <label class="code-entry">
+                  <span>Edit code</span>
+                  <textarea id="exampleCode" spellcheck="false">{{ site.data.examples[0].code | escape }}</textarea>
+                </label>
+              </div>
+              <script type="application/json" id="exampleData">{{ site.data.examples | jsonify }}</script>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>
